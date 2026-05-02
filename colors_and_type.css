@@ -1,0 +1,230 @@
+/* =========================================================================
+   E-Mazdoor Design System — colors, type, spacing, radii, shadows, motion
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Noto+Naskh+Arabic:wght@400;600&display=swap');
+
+:root {
+  /* ---------- Brand ---------- */
+  --brand-orange:        #F26B1F;
+  --brand-orange-hover:  #D85A14;
+  --brand-orange-press:  #B94A0E;
+  --brand-orange-tint:   #FCE5D6; /* 12% wash for badges, hovers */
+
+  --ink:                 #0E1A2B;
+  --ink-80:              rgba(14, 26, 43, 0.80);
+  --ink-60:              rgba(14, 26, 43, 0.60);
+  --ink-40:              rgba(14, 26, 43, 0.40);
+  --ink-20:              rgba(14, 26, 43, 0.20);
+  --ink-10:              rgba(14, 26, 43, 0.10);
+  --ink-06:              rgba(14, 26, 43, 0.06);
+
+  --kraft:               #F4EAD5;
+  --kraft-deep:          #EADFC4;
+
+  /* ---------- Slate scale ---------- */
+  --slate-50:            #F7F8FA;
+  --slate-100:           #EEF1F4;
+  --slate-200:           #DDE2E8;
+  --slate-300:           #C2CAD3;
+  --slate-400:           #93A0AE;
+  --slate-500:           #677584;
+  --slate-600:           #4A5664;
+  --slate-700:           #333D4A;
+  --slate-800:           #1F2731;
+  --slate-900:           #0E1A2B;
+
+  /* ---------- Semantic ---------- */
+  --success:             #2F8A3E;
+  --success-tint:        #E1F1E3;
+  --warn:                #E5A00D;
+  --warn-tint:           #FBEFCC;
+  --danger:              #C0392B;
+  --danger-tint:         #F7DBD6;
+  --info:                #2B6CB0;
+  --info-tint:           #DCEAF7;
+
+  /* ---------- Surfaces ---------- */
+  --surface-app:         var(--kraft);
+  --surface-card:        #FFFFFF;
+  --surface-web:         var(--slate-50);
+  --surface-inverse:     var(--ink);
+  --hairline:            var(--ink-10);
+
+  /* ---------- Typography — families ---------- */
+  --font-display:        'Archivo Narrow', 'Helvetica Neue Condensed', 'Arial Narrow', sans-serif;
+  --font-body:           'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:           'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-urdu:           'Noto Naskh Arabic', serif;
+
+  /* ---------- Typography — scale ---------- */
+  --fs-eyebrow:    11px;
+  --fs-caption:    12px;
+  --fs-body-sm:    13px;
+  --fs-body:       15px;
+  --fs-body-lg:    17px;
+  --fs-h4:         20px;
+  --fs-h3:         24px;
+  --fs-h2:         32px;
+  --fs-h1:         44px;
+  --fs-display:    64px;
+
+  --lh-tight:      1.1;
+  --lh-snug:       1.25;
+  --lh-normal:     1.45;
+  --lh-relaxed:    1.6;
+
+  --ls-eyebrow:    0.08em;
+  --ls-display:    -0.01em;
+
+  /* ---------- Spacing (4px base) ---------- */
+  --sp-1:   4px;
+  --sp-2:   8px;
+  --sp-3:   12px;
+  --sp-4:   16px;
+  --sp-5:   20px;
+  --sp-6:   24px;
+  --sp-8:   32px;
+  --sp-10:  40px;
+  --sp-12:  48px;
+  --sp-16:  64px;
+
+  /* ---------- Radius ---------- */
+  --r-sm:   4px;
+  --r-md:   8px;
+  --r-lg:   12px;
+  --r-xl:   16px;
+  --r-pill: 999px;
+
+  /* ---------- Shadows (ink-tinted, two-layer) ---------- */
+  --shadow-sm:  0 1px 0 rgba(14, 26, 43, 0.06), 0 1px 2px rgba(14, 26, 43, 0.06);
+  --shadow-md:  0 2px 4px rgba(14, 26, 43, 0.06), 0 8px 16px rgba(14, 26, 43, 0.08);
+  --shadow-lg:  0 4px 8px rgba(14, 26, 43, 0.08), 0 16px 32px rgba(14, 26, 43, 0.10);
+  --shadow-stamp: 0 0 0 2px var(--ink), 4px 4px 0 0 var(--ink);
+
+  /* ---------- Motion ---------- */
+  --ease-out-quart: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out:    cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast:       120ms;
+  --dur-base:       180ms;
+  --dur-slow:       240ms;
+  --dur-route:      320ms;
+
+  /* ---------- Layout ---------- */
+  --gutter-mobile:  20px;
+  --gutter-web:     32px;
+  --tabbar-h:       64px;
+  --header-h:       56px;
+  --rail-w:         240px;
+}
+
+/* =========================================================================
+   Semantic typography classes
+   ========================================================================= */
+
+.t-eyebrow {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--ink-60);
+}
+
+.t-h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  color: var(--ink);
+}
+
+.t-h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-tight);
+  color: var(--ink);
+}
+
+.t-h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-snug);
+  color: var(--ink);
+}
+
+.t-h4 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-h4);
+  line-height: var(--lh-snug);
+  color: var(--ink);
+}
+
+.t-body-lg {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-relaxed);
+  color: var(--ink);
+}
+
+.t-body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  color: var(--ink);
+}
+
+.t-body-sm {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-normal);
+  color: var(--ink-80);
+}
+
+.t-caption {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--fs-caption);
+  line-height: var(--lh-normal);
+  color: var(--ink-60);
+}
+
+.t-mono {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--fs-body-sm);
+  letter-spacing: -0.01em;
+  color: var(--ink-80);
+}
+
+.t-price {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--ls-display);
+  color: var(--ink);
+}
+
+/* =========================================================================
+   Base reset
+   ========================================================================= */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--surface-app);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button { font-family: inherit; }

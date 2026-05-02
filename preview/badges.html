@@ -1,0 +1,25 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Badges</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: #fff; min-height: 150px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .b { font-family: var(--font-body); font-weight: 600; font-size: 12px; padding: 4px 10px; border-radius: 999px; display: inline-flex; align-items: center; gap: 4px;}
+  .solid { background: var(--ink); color: var(--kraft);}
+  .orange { background: var(--brand-orange); color: #fff;}
+  .success { background: var(--success-tint); color: var(--success);}
+  .warn { background: var(--warn-tint); color: #8E5D00;}
+  .danger { background: var(--danger-tint); color: var(--danger);}
+  .info { background: var(--info-tint); color: var(--info);}
+  .outline { background: #fff; border: 1px solid var(--ink-20); color: var(--ink);}
+  .dot { width: 6px; height: 6px; border-radius: 999px; background: currentColor; display: inline-block; }
+</style></head>
+<body>
+  <span class="b orange"><span class="dot"></span>Available now</span>
+  <span class="b success">Job complete</span>
+  <span class="b warn">On the way</span>
+  <span class="b danger">Cancelled</span>
+  <span class="b info">Pending review</span>
+  <span class="b solid">Featured</span>
+  <span class="b outline">4 yrs</span>
+  <span class="b outline">2.4 km</span>
+</body></html>

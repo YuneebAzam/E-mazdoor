@@ -1,0 +1,32 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Buttons</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: #fff; min-height: 150px; display: flex; flex-direction: column; gap: 12px; }
+  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .btn { font-family: var(--font-body); font-weight: 600; font-size: 14px; border-radius: 999px; border: 1px solid transparent; padding: 10px 20px; cursor: pointer; line-height: 1; transition: all 180ms var(--ease-out-quart); }
+  .btn-primary { background: var(--brand-orange); color: #fff; }
+  .btn-primary:hover { background: var(--brand-orange-hover); }
+  .btn-secondary { background: #fff; color: var(--ink); border-color: var(--ink); }
+  .btn-secondary:hover { background: var(--slate-100); }
+  .btn-ghost { background: transparent; color: var(--ink); }
+  .btn-ghost:hover { background: var(--slate-100); }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-sm { padding: 6px 14px; font-size: 12px; }
+  .btn-lg { padding: 14px 26px; font-size: 16px; }
+  .btn-disabled { opacity: 0.4; pointer-events: none; }
+  .label { font-family: var(--font-body); font-size: 11px; color: var(--ink-60); letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; width: 70px; }
+</style></head>
+<body>
+  <div class="row"><span class="label">Primary</span>
+    <button class="btn btn-primary btn-lg">Book now · Rs 1,200</button>
+    <button class="btn btn-primary">Confirm</button>
+    <button class="btn btn-primary btn-sm">Add</button>
+    <button class="btn btn-primary btn-disabled">Disabled</button>
+  </div>
+  <div class="row"><span class="label">Secondary</span>
+    <button class="btn btn-secondary">Save for later</button>
+    <button class="btn btn-ghost">Cancel</button>
+    <button class="btn btn-danger">Cancel booking</button>
+  </div>
+</body></html>

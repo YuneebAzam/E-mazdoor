@@ -1,0 +1,27 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Shadows</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 32px 24px; background: var(--slate-50); min-height: 150px; display: flex; gap: 28px; align-items: center; }
+  .stack { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .box { width: 110px; height: 64px; background: #fff; border-radius: 12px; border: 1px solid var(--ink-10); }
+  .sm { box-shadow: var(--shadow-sm); }
+  .md { box-shadow: var(--shadow-md); }
+  .lg { box-shadow: var(--shadow-lg); }
+  .stamp {
+    background: var(--kraft);
+    border: 2px solid var(--ink);
+    box-shadow: 4px 4px 0 0 var(--ink);
+    transform: rotate(-3deg);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; letter-spacing: 0.08em; color: var(--ink);
+    font-size: 13px;
+  }
+  .name { font-family: var(--font-mono); font-size: 11px; color: var(--ink-60); }
+</style></head>
+<body>
+  <div class="stack"><div class="box sm"></div><span class="name">shadow-sm</span></div>
+  <div class="stack"><div class="box md"></div><span class="name">shadow-md</span></div>
+  <div class="stack"><div class="box lg"></div><span class="name">shadow-lg</span></div>
+  <div class="stack"><div class="box stamp">VERIFIED</div><span class="name">stamp</span></div>
+</body></html>

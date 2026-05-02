@@ -1,0 +1,30 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Semantic colors</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: #fff; min-height: 150px; display: flex; gap: 12px; }
+  .card { flex: 1; border: 1px solid var(--ink-10); border-radius: 8px; overflow: hidden; }
+  .bar { height: 64px; display: flex; align-items: center; padding: 0 14px; }
+  .badge { font-family: var(--font-display); font-weight: 700; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
+  .meta { padding: 10px 14px; background: #fff; }
+  .name { font-family: var(--font-body); font-weight: 600; font-size: 13px; color: var(--ink); }
+  .hex { font-family: var(--font-mono); font-size: 11px; color: var(--ink-60); margin-top: 2px; }
+</style></head>
+<body>
+  <div class="card">
+    <div class="bar" style="background: var(--success-tint)"><span class="badge" style="background:var(--success); color:#fff">Done</span></div>
+    <div class="meta"><div class="name">Success</div><div class="hex">#2F8A3E · job complete</div></div>
+  </div>
+  <div class="card">
+    <div class="bar" style="background: var(--warn-tint)"><span class="badge" style="background:var(--warn); color:var(--ink)">On the way</span></div>
+    <div class="meta"><div class="name">Warn</div><div class="hex">#E5A00D · urgent / arriving</div></div>
+  </div>
+  <div class="card">
+    <div class="bar" style="background: var(--danger-tint)"><span class="badge" style="background:var(--danger); color:#fff">Cancelled</span></div>
+    <div class="meta"><div class="name">Danger</div><div class="hex">#C0392B · cancelled / failed</div></div>
+  </div>
+  <div class="card">
+    <div class="bar" style="background: var(--info-tint)"><span class="badge" style="background:var(--info); color:#fff">Info</span></div>
+    <div class="meta"><div class="name">Info</div><div class="hex">#2B6CB0 · informational</div></div>
+  </div>
+</body></html>

@@ -1,0 +1,416 @@
+/* E-Mazdoor customer app shared styles */
+
+* { box-sizing: border-box; }
+
+.em-app {
+  font-family: var(--font-body);
+  background: var(--kraft);
+  color: var(--ink);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ---------- Header ---------- */
+.em-header {
+  padding: 52px 20px 0;
+  min-height: 96px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--kraft);
+  border-bottom: 1px solid var(--ink-10);
+  flex: none;
+  position: relative;
+  z-index: 5;
+  padding-bottom: 12px;
+}
+.em-header .back {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 999px;
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+.em-header .back:hover { background: var(--ink-06); }
+.em-header .title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.em-header .greet {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--ink-60);
+}
+.em-header .name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--ink);
+  margin-top: -2px;
+}
+.em-header .avatar {
+  width: 36px; height: 36px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--kraft);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ---------- Body ---------- */
+.em-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 24px;
+}
+.em-section {
+  padding: 16px 20px 4px;
+}
+.em-section .eyebrow {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-60);
+  margin-bottom: 8px;
+}
+.em-section .h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+/* ---------- Search ---------- */
+.em-search {
+  margin: 8px 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid var(--ink-10);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: var(--shadow-sm);
+}
+.em-search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--ink);
+  background: transparent;
+}
+.em-search input::placeholder { color: var(--ink-40); }
+.em-search .icon { color: var(--ink-60); display: flex; }
+
+/* ---------- Service grid ---------- */
+.em-services {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 8px 20px 0;
+}
+.em-tile {
+  background: #fff;
+  border: 1px solid var(--ink-10);
+  border-radius: 12px;
+  padding: 14px 8px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  position: relative;
+  transition: transform 120ms var(--ease-out-quart);
+}
+.em-tile:active { transform: scale(0.97); }
+.em-tile.selected {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 2px var(--ink);
+}
+.em-tile .ic {
+  width: 36px; height: 36px;
+  background: var(--kraft);
+  border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink);
+}
+.em-tile .name {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  text-align: center;
+  color: var(--ink);
+}
+.em-tile .urgent {
+  position: absolute;
+  top: -6px; right: -4px;
+  background: var(--brand-orange);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transform: rotate(8deg);
+}
+
+/* ---------- Worker card ---------- */
+.em-worker {
+  background: #fff;
+  border: 1px solid var(--ink-10);
+  border-radius: 12px;
+  display: flex;
+  padding: 14px;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin: 0 20px 10px;
+  cursor: pointer;
+}
+.em-worker .stripe {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+}
+.em-worker .stripe.available { background: var(--brand-orange); }
+.em-worker .stripe.busy { background: var(--slate-400); }
+.em-worker .av {
+  width: 52px; height: 52px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--kraft);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 20px;
+  flex: none;
+}
+.em-worker .meta { flex: 1; min-width: 0; }
+.em-worker .name {
+  font-family: var(--font-body); font-weight: 600; font-size: 15px;
+  display: flex; align-items: center; gap: 6px;
+}
+.em-worker .verified-tag {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--success); background: var(--success-tint);
+  padding: 2px 6px; border-radius: 3px;
+}
+.em-worker .trade { font-size: 13px; color: var(--ink-60); margin-top: 1px; }
+.em-worker .row { display: flex; gap: 10px; margin-top: 6px; font-size: 12px; color: var(--ink-80); align-items: center; }
+.em-worker .star { color: var(--warn); }
+.em-worker .price { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--ink); align-self: flex-start; font-variant-numeric: tabular-nums; }
+.em-worker .price .rs { font-size: 11px; color: var(--ink-60); margin-right: 2px; }
+
+/* ---------- Buttons ---------- */
+.em-btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 14px 24px;
+  cursor: pointer;
+  line-height: 1;
+  transition: all 180ms var(--ease-out-quart);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.em-btn-primary { background: var(--brand-orange); color: #fff; }
+.em-btn-primary:hover { background: var(--brand-orange-hover); }
+.em-btn-primary:active { transform: scale(0.98); }
+.em-btn-secondary { background: #fff; color: var(--ink); border-color: var(--ink); }
+.em-btn-block { width: 100%; }
+
+/* ---------- Tab bar ---------- */
+.em-tabbar {
+  height: 64px;
+  background: var(--kraft);
+  border-top: 1px solid var(--ink-10);
+  display: flex;
+  flex: none;
+  position: relative;
+  z-index: 5;
+}
+.em-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-60);
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding-bottom: 6px;
+}
+.em-tab .ic { display: flex; }
+.em-tab.active { color: var(--brand-orange); }
+
+/* ---------- Bottom CTA ---------- */
+.em-cta-bar {
+  flex: none;
+  background: var(--kraft);
+  border-top: 1px solid var(--ink-10);
+  padding: 14px 20px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.em-cta-bar .price { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--ink); font-variant-numeric: tabular-nums;}
+.em-cta-bar .price .rs { font-size: 12px; color: var(--ink-60); margin-right: 2px;}
+.em-cta-bar .from { font-size: 11px; color: var(--ink-60); letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600;}
+
+/* ---------- Stamps ---------- */
+.em-stamp {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  padding: 10px 18px;
+  border: 2px solid var(--ink);
+  color: var(--ink);
+  background: var(--kraft);
+  display: inline-block;
+}
+.em-stamp.green { color: var(--success); border-color: var(--success); }
+.em-stamp.orange { color: var(--brand-orange); border-color: var(--brand-orange); }
+
+/* ---------- Time/chip selectors ---------- */
+.em-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.em-chip {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  padding: 8px 14px;
+  border: 1px solid var(--ink-20);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+}
+.em-chip.on { background: var(--ink); color: var(--kraft); border-color: var(--ink); }
+
+/* ---------- Pay options ---------- */
+.em-pay {
+  background: #fff;
+  border: 1px solid var(--ink-10);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 20px 10px;
+  cursor: pointer;
+}
+.em-pay.on { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+.em-pay .ic { width: 44px; height: 44px; border-radius: 10px; background: var(--kraft); display: flex; align-items: center; justify-content: center; color: var(--ink); }
+.em-pay .ttl { font-weight: 600; font-size: 15px; }
+.em-pay .sub { font-size: 12px; color: var(--ink-60); margin-top: 1px; }
+.em-pay .radio { width: 22px; height: 22px; border-radius: 999px; border: 2px solid var(--ink-20); flex: none; position: relative;}
+.em-pay.on .radio { border-color: var(--ink);}
+.em-pay.on .radio::after { content: ''; position: absolute; inset: 4px; border-radius: 999px; background: var(--ink);}
+
+/* ---------- Receipt rows ---------- */
+.em-receipt {
+  margin: 0 20px;
+  background: #fff;
+  border: 1px solid var(--ink-10);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.em-receipt .row {
+  display: flex; justify-content: space-between; padding: 6px 0;
+  font-size: 14px; color: var(--ink-80);
+}
+.em-receipt .row .v { color: var(--ink); font-weight: 500; }
+.em-receipt .row.total {
+  border-top: 1px dashed var(--ink-20);
+  margin-top: 6px; padding-top: 12px; font-weight: 600;
+}
+.em-receipt .row.total .v {
+  font-family: var(--font-display); font-weight: 700; font-size: 20px; font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Star rating ---------- */
+.em-stars { display: flex; gap: 6px; }
+.em-stars button {
+  background: none; border: none; cursor: pointer; padding: 0;
+  color: var(--slate-300);
+}
+.em-stars button.on { color: var(--warn); }
+.em-stars svg { width: 36px; height: 36px; }
+
+/* ---------- Detail hero ---------- */
+.em-hero {
+  background: var(--ink);
+  color: var(--kraft);
+  padding: 24px 20px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.em-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: url('../../assets/blueprint-grid.svg');
+  opacity: 0.18;
+  pointer-events: none;
+}
+.em-hero .row { display: flex; align-items: center; gap: 14px; position: relative;}
+.em-hero .av { width: 64px; height: 64px; border-radius: 999px; background: var(--brand-orange); color: var(--ink); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; font-size: 24px;}
+.em-hero .name { font-family: var(--font-display); font-weight: 700; font-size: 22px;}
+.em-hero .trade { font-size: 13px; color: rgba(244,234,213,0.7); margin-top: 2px;}
+.em-hero .stats { display: flex; gap: 20px; margin-top: 14px; position: relative;}
+.em-hero .stat .v { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--kraft);}
+.em-hero .stat .l { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(244,234,213,0.6);}
+
+/* ---------- Booking confirmation ---------- */
+.em-confirm {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 32px 24px; text-align: center; gap: 16px;
+  background: var(--kraft);
+  position: relative;
+}
+.em-confirm::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: url('../../assets/blueprint-grid.svg');
+  opacity: 0.5;
+  pointer-events: none;
+}
+.em-confirm > * { position: relative; }
+.em-confirm .stamp-wrap {
+  transform: rotate(-6deg);
+  box-shadow: 6px 6px 0 0 var(--success);
+}
+.em-confirm h1 {
+  font-family: var(--font-display); font-weight: 700; font-size: 32px; line-height: 1.1;
+  color: var(--ink); margin: 8px 0 0;
+}
+.em-confirm p { font-size: 15px; color: var(--ink-80); max-width: 280px; line-height: 1.5; margin: 0; }
+.em-confirm .id { font-family: var(--font-mono); font-size: 12px; color: var(--ink-60); }
+
+/* hairline divider */
+.em-hr { border: none; border-top: 1px solid var(--ink-10); margin: 0; }

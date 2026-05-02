@@ -1,0 +1,35 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Booking row</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 18px 24px; background: #fff; min-height: 150px;}
+  .list { border-top: 1px solid var(--ink-10); }
+  .row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--ink-10);}
+  .date { font-family: var(--font-display); font-weight: 700; text-align: center; min-width: 44px;}
+  .date .d { font-size: 22px; line-height: 1;}
+  .date .m { font-size: 10px; letter-spacing: 0.08em; color: var(--ink-60); text-transform: uppercase; margin-top: 2px;}
+  .body { flex: 1;}
+  .ttl { font-family: var(--font-body); font-weight: 600; font-size: 14px; color: var(--ink);}
+  .sub { font-family: var(--font-body); font-size: 12px; color: var(--ink-60); margin-top: 2px;}
+  .price { font-family: var(--font-display); font-weight: 700; font-size: 16px; font-variant-numeric: tabular-nums;}
+  .rs { font-size: 10px; color: var(--ink-60); margin-right: 2px;}
+  .pill { font-family: var(--font-body); font-weight: 600; font-size: 11px; padding: 3px 9px; border-radius: 999px;}
+  .ok { background: var(--success-tint); color: var(--success);}
+  .pend { background: var(--warn-tint); color: #8E5D00;}
+</style></head>
+<body>
+  <div class="list">
+    <div class="row">
+      <div class="date"><div class="d">12</div><div class="m">May</div></div>
+      <div class="body"><div class="ttl">Imran K. · Plumber</div><div class="sub">Sink leak · paid in cash</div></div>
+      <div><span class="pill ok">Done</span></div>
+      <div class="price"><span class="rs">Rs</span>800</div>
+    </div>
+    <div class="row">
+      <div class="date"><div class="d">13</div><div class="m">May</div></div>
+      <div class="body"><div class="ttl">Rashid A. · Electrician</div><div class="sub">Fan installation · 4 pm</div></div>
+      <div><span class="pill pend">On the way</span></div>
+      <div class="price"><span class="rs">Rs</span>1,200</div>
+    </div>
+  </div>
+</body></html>

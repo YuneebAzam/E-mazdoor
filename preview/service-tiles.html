@@ -1,0 +1,20 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Service tile</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  body { margin: 0; padding: 22px 24px; background: var(--kraft); min-height: 150px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .tile { background: #fff; border: 1px solid var(--ink-10); border-radius: 12px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; box-shadow: var(--shadow-sm); position: relative;}
+  .icon { width: 36px; height: 36px; background: var(--kraft); border-radius: 999px; display: flex; align-items: center; justify-content: center; color: var(--ink);}
+  .name { font-family: var(--font-body); font-weight: 600; font-size: 12px; color: var(--ink); text-align: center; }
+  .price { font-family: var(--font-mono); font-size: 10px; color: var(--ink-60); }
+  .urgent { position: absolute; top: -6px; right: -4px; background: var(--brand-orange); color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 8px; letter-spacing: 0.08em; padding: 2px 6px; border-radius: 4px; transform: rotate(8deg);}
+</style></head>
+<body>
+  <div class="tile"><div class="icon"><i data-lucide="wrench"></i></div><div class="name">Plumber</div><div class="price">from Rs 600</div></div>
+  <div class="tile"><div class="icon"><i data-lucide="plug-zap"></i></div><div class="name">Electrician</div><div class="price">from Rs 800</div><span class="urgent">Urgent</span></div>
+  <div class="tile"><div class="icon"><i data-lucide="hammer"></i></div><div class="name">Carpenter</div><div class="price">from Rs 1,000</div></div>
+  <div class="tile"><div class="icon"><i data-lucide="paint-roller"></i></div><div class="name">Painter</div><div class="price">from Rs 1,500</div></div>
+  <div class="tile"><div class="icon"><i data-lucide="air-vent"></i></div><div class="name">AC tech</div><div class="price">from Rs 1,200</div></div>
+  <script>lucide.createIcons();</script>
+</body></html>

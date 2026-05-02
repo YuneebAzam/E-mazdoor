@@ -1,0 +1,18 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Stamps</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 28px 24px; background: var(--kraft); min-height: 150px; display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
+  .stamp { font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: 0.1em; padding: 8px 14px; border: 2px solid var(--ink); color: var(--ink); background: var(--kraft); transform: rotate(-4deg); box-shadow: 4px 4px 0 0 var(--ink); }
+  .stamp.orange { color: var(--brand-orange); border-color: var(--brand-orange); box-shadow: 4px 4px 0 0 var(--brand-orange);}
+  .stamp.red { color: var(--danger); border-color: var(--danger); box-shadow: 4px 4px 0 0 var(--danger);}
+  .stamp.right { transform: rotate(3deg);}
+  .stamp.green { color: var(--success); border-color: var(--success); box-shadow: 4px 4px 0 0 var(--success);}
+</style></head>
+<body>
+  <div class="stamp">VERIFIED</div>
+  <div class="stamp orange right">URGENT</div>
+  <div class="stamp green">BOOKED</div>
+  <div class="stamp">COD</div>
+  <div class="stamp red right">CANCELLED</div>
+</body></html>

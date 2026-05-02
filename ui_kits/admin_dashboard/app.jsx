@@ -1,0 +1,702 @@
+/* global React, lucide */
+const { useState, useEffect, useRef } = React;
+
+// ===== Icon =====
+function AIcon({ name, size = 16, stroke = 1.75 }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (ref.current && window.lucide) {
+      ref.current.innerHTML = '';
+      const node = document.createElement('i');
+      node.setAttribute('data-lucide', name);
+      ref.current.appendChild(node);
+      window.lucide.createIcons({ attrs: { width: size, height: size, 'stroke-width': stroke } });
+    }
+  }, [name, size, stroke]);
+  return <span ref={ref} style={{ display: 'inline-flex' }} />;
+}
+
+// ===== Button — typed, all variants =====
+function Btn({ variant = 'secondary', size, icon, children, on, disabled, onClick, title }) {
+  const cls = [
+    'adm-btn',
+    'adm-btn-' + variant,
+    size ? 'adm-btn-' + size : '',
+    icon && !children ? 'adm-btn-icon' : '',
+    on ? 'is-on' : '',
+    disabled ? 'is-disabled' : '',
+  ].filter(Boolean).join(' ');
+  return (
+    <button className={cls} onClick={disabled ? undefined : onClick} title={title} disabled={disabled}>
+      {icon ? <AIcon name={icon} size={size === 'sm' ? 12 : 14} /> : null}
+      {children}
+    </button>
+  );
+}
+
+// ===== Toast =====
+function useToast() {
+  const [msg, setMsg] = useState(null);
+  useEffect(() => {
+    if (!msg) return;
+    const t = setTimeout(() => setMsg(null), 2400);
+    return () => clearTimeout(t);
+  }, [msg]);
+  return [msg, setMsg];
+}
+function Toast({ msg }) {
+  if (!msg) return null;
+  return <div className="adm-toast"><span className="dot"/>{msg}</div>;
+}
+
+// ===== Rail =====
+function Rail({ active, onChange }) {
+  const items = [
+    { id: 'overview', icon: 'layout-dashboard', label: 'Overview' },
+    { id: 'bookings', icon: 'calendar-clock', label: 'Bookings', count: '128' },
+    { id: 'providers', icon: 'hard-hat', label: 'Providers', count: '47' },
+    { id: 'customers', icon: 'users', label: 'Customers', count: '912' },
+    { id: 'complaints', icon: 'message-square-warning', label: 'Complaints', count: '6' },
+  ];
+  const sysItems = [
+    { id: 'payments', icon: 'banknote', label: 'Payments' },
+    { id: 'settings', icon: 'settings', label: 'Settings' },
+  ];
+  return (
+    <aside className="adm-rail">
+      <div className="adm-brand">
+        <img src="../../assets/logo-mark.svg" width="32" height="32" alt=""/>
+        <div>
+          <div className="word">E-MAZDOOR</div>
+          <div className="tag">Admin</div>
+        </div>
+      </div>
+      <div className="adm-nav-section">Operations</div>
+      {items.map(it => (
+        <button key={it.id} className={'adm-nav-item' + (active === it.id ? ' active' : '')} onClick={() => onChange(it.id)}>
+          <AIcon name={it.icon} size={18} />
+          <span>{it.label}</span>
+          {it.count ? <span className="count">{it.count}</span> : null}
+        </button>
+      ))}
+      <div className="adm-nav-section">System</div>
+      {sysItems.map(it => (
+        <button key={it.id} className={'adm-nav-item' + (active === it.id ? ' active' : '')} onClick={() => onChange(it.id)}>
+          <AIcon name={it.icon} size={18} />
+          <span>{it.label}</span>
+        </button>
+      ))}
+    </aside>
+  );
+}
+
+function TopBar({ onAction }) {
+  return (
+    <div className="adm-top">
+      <div className="adm-search">
+        <AIcon name="search" size={16} />
+        <input placeholder="Search bookings, providers, customers…" />
+      </div>
+      <div className="actions">
+        <Btn variant="secondary" size="sm" icon="bell" onClick={() => onAction('Opened notifications')}>6</Btn>
+        <Btn variant="ghost" icon="help-circle" onClick={() => onAction('Help opened')} title="Help" />
+        <div className="av" onClick={() => onAction('Profile menu')} title="Admin account">AQ</div>
+      </div>
+    </div>
+  );
+}
+
+function KPI({ label, value, prefix, delta, down }) {
+  return (
+    <div className="adm-kpi">
+      <div className="label">{label}</div>
+      <div className="v">{prefix ? <span className="rs">{prefix}</span> : null}{value}</div>
+      <div className={'delta' + (down ? ' down' : '')}>{delta}</div>
+    </div>
+  );
+}
+
+function StatusPill({ s }) {
+  const map = {
+    'Done': 'ok', 'On the way': 'pend', 'Pending': 'pend', 'Cancelled': 'danger',
+    'Pending review': 'info', 'Verified': 'ok', 'Open': 'pend', 'Resolved': 'ok',
+    'Active': 'ok', 'Suspended': 'danger',
+  };
+  return <span className={'adm-pill ' + (map[s] || 'info')}>{s}</span>;
+}
+
+// ===== Data =====
+const INITIAL_BOOKINGS = [
+  { id: 'EM-21458', who: 'Asma R.', initials: 'AR', svc: 'Plumber', pro: 'Imran K.', date: '12 May · 3:30 pm', status: 'Done', price: 800, pay: 'COD' },
+  { id: 'EM-21459', who: 'Tariq H.', initials: 'TH', svc: 'Electrician', pro: 'Rashid A.', date: '13 May · 4:00 pm', status: 'On the way', price: 1200, pay: 'Card' },
+  { id: 'EM-21460', who: 'Nida B.', initials: 'NB', svc: 'Carpenter', pro: 'Salman P.', date: '13 May · 5:30 pm', status: 'Pending', price: 1400, pay: 'COD' },
+  { id: 'EM-21443', who: 'Junaid M.', initials: 'JM', svc: 'Plumber', pro: 'Kashif M.', date: '02 May · 11:00 am', status: 'Done', price: 650, pay: 'COD' },
+  { id: 'EM-21421', who: 'Sana K.', initials: 'SK', svc: 'Painter', pro: 'Nasir L.', date: '24 Apr · 2:00 pm', status: 'Cancelled', price: 1500, pay: 'Card' },
+];
+const INITIAL_PENDING = [
+  { id: 'p1', name: 'Hamza Iqbal', initials: 'HI', trade: 'AC technician', city: 'Karachi · DHA', years: 3 },
+  { id: 'p2', name: 'Bilal Khan', initials: 'BK', trade: 'Plumber', city: 'Karachi · Gulshan', years: 6 },
+  { id: 'p3', name: 'Faisal R.', initials: 'FR', trade: 'Electrician', city: 'Lahore · Johar Town', years: 2 },
+];
+const INITIAL_PROVIDERS = [
+  { id: 'i1', name: 'Imran K.', initials: 'IK', trade: 'Plumber', city: 'Karachi · Gulshan', years: 4, jobs: 142, rating: 4.8, status: 'Verified' },
+  { id: 'i2', name: 'Rashid A.', initials: 'RA', trade: 'Electrician', city: 'Karachi · DHA', years: 7, jobs: 311, rating: 4.9, status: 'Verified' },
+  { id: 'i3', name: 'Kashif M.', initials: 'KM', trade: 'Plumber', city: 'Karachi · North Nazimabad', years: 2, jobs: 64, rating: 4.5, status: 'Pending review' },
+  { id: 'i4', name: 'Salman P.', initials: 'SP', trade: 'Carpenter', city: 'Karachi · Clifton', years: 9, jobs: 240, rating: 4.7, status: 'Verified' },
+  { id: 'i5', name: 'Nasir L.', initials: 'NL', trade: 'Painter', city: 'Lahore · Gulberg', years: 5, jobs: 88, rating: 4.4, status: 'Verified' },
+];
+
+// ===== Overview =====
+function Overview({ bookings, pending, onApprove, onReject, onToast, onNav }) {
+  const [filterStatus, setFilterStatus] = useState('All');
+  const filtered = filterStatus === 'All' ? bookings : bookings.filter(b => b.status === filterStatus);
+  return (
+    <div className="adm-main">
+      <div className="adm-page-head">
+        <div>
+          <h1>Overview</h1>
+          <p>What's running on the platform today.</p>
+        </div>
+        <div className="actions">
+          <Btn variant="ghost" icon="download" onClick={() => onToast('Report exported')}>Export</Btn>
+          <Btn variant="secondary" icon="calendar" onClick={() => onToast('Date range: This week')}>This week</Btn>
+          <Btn variant="primary" icon="plus" onClick={() => onNav('providers')}>Add provider</Btn>
+        </div>
+      </div>
+      <div className="adm-kpis">
+        <KPI label="Bookings today" value="128" delta="+12 vs yesterday" />
+        <KPI label="Active providers" value="47" delta="+3 this week" />
+        <KPI label="Revenue" prefix="Rs" value="184,200" delta="+8.4%" />
+        <KPI label="Open complaints" value="6" delta="-2" down />
+      </div>
+      <div className="adm-grid-2">
+        <div className="adm-card">
+          <div className="adm-card-head">
+            <h3>Recent bookings</h3>
+            <div className="actions">
+              {['All', 'Pending', 'On the way', 'Done', 'Cancelled'].map(s => (
+                <Btn key={s} variant="secondary" size="sm" on={filterStatus === s} onClick={() => setFilterStatus(s)}>{s}</Btn>
+              ))}
+              <Btn variant="ghost" size="sm" icon="external-link" onClick={() => onNav('bookings')}>View all</Btn>
+            </div>
+          </div>
+          {filtered.length === 0 ? (
+            <div className="adm-empty">
+              <AIcon name="inbox" size={32} />
+              <h4>No {filterStatus.toLowerCase()} bookings</h4>
+              <p>Clear the filter to see everything.</p>
+              <Btn variant="secondary" onClick={() => setFilterStatus('All')}>Clear filter</Btn>
+            </div>
+          ) : (
+            <table className="adm-table">
+              <thead><tr><th>ID</th><th>Customer</th><th>Service</th><th>Pro</th><th>Date</th><th>Status</th><th>Pay</th><th style={{textAlign:'right'}}>Price</th></tr></thead>
+              <tbody>
+                {filtered.map(b => (
+                  <tr key={b.id}>
+                    <td><span className="id">{b.id}</span></td>
+                    <td><div className="who"><div className="av">{b.initials}</div>{b.who}</div></td>
+                    <td>{b.svc}</td>
+                    <td>{b.pro}</td>
+                    <td>{b.date}</td>
+                    <td><StatusPill s={b.status} /></td>
+                    <td>{b.pay}</td>
+                    <td style={{textAlign:'right'}}><span className="price"><span className="rs">Rs</span>{b.price.toLocaleString()}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+        <div className="adm-card">
+          <div className="adm-card-head"><h3>Pending approval</h3><div className="actions"><span className="adm-pill info">{pending.length}</span></div></div>
+          {pending.length === 0 ? (
+            <div className="adm-empty">
+              <AIcon name="check-circle-2" size={32} />
+              <h4>Queue clear</h4>
+              <p>No providers waiting on review.</p>
+            </div>
+          ) : pending.map(p => (
+            <div className="adm-provider" key={p.id}>
+              <div className="av">{p.initials}</div>
+              <div>
+                <div className="name">{p.name}</div>
+                <div className="sub">{p.trade} · {p.city} · {p.years} yrs</div>
+              </div>
+              <div className="actions">
+                <Btn variant="danger-outline" size="sm" onClick={() => onReject(p.id)}>Reject</Btn>
+                <Btn variant="success" size="sm" icon="check" onClick={() => onApprove(p.id)}>Approve</Btn>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ===== Bookings page =====
+function BookingsPage({ bookings, setBookings, onToast }) {
+  const [filterStatus, setFilterStatus] = useState('All');
+  const [filterPay, setFilterPay] = useState('All');
+  const filtered = bookings
+    .filter(b => filterStatus === 'All' || b.status === filterStatus)
+    .filter(b => filterPay === 'All' || b.pay === filterPay);
+
+  const cancelBooking = (id) => {
+    setBookings(prev => prev.map(b => b.id === id ? { ...b, status: 'Cancelled' } : b));
+    onToast('Booking ' + id + ' cancelled');
+  };
+  const markDone = (id) => {
+    setBookings(prev => prev.map(b => b.id === id ? { ...b, status: 'Done' } : b));
+    onToast('Booking ' + id + ' marked done');
+  };
+
+  return (
+    <div className="adm-main">
+      <div className="adm-page-head">
+        <div><h1>Bookings</h1><p>{filtered.length} of {bookings.length} bookings shown.</p></div>
+        <div className="actions">
+          <Btn variant="ghost" icon="download" onClick={() => onToast('Exported as CSV')}>Export CSV</Btn>
+          <Btn variant="dark" icon="plus" onClick={() => onToast('Manual booking flow opened')}>New booking</Btn>
+        </div>
+      </div>
+      <div className="adm-card">
+        <div className="adm-card-head">
+          <h3>All bookings</h3>
+          <div className="actions">
+            {['All', 'Pending', 'On the way', 'Done', 'Cancelled'].map(s => (
+              <Btn key={s} variant="secondary" size="sm" on={filterStatus === s} onClick={() => setFilterStatus(s)}>{s}</Btn>
+            ))}
+            <span style={{ width: 1, background: 'var(--slate-200)', alignSelf: 'stretch' }} />
+            {['All', 'COD', 'Card'].map(p => (
+              <Btn key={p} variant="secondary" size="sm" on={filterPay === p} onClick={() => setFilterPay(p)}>{p}</Btn>
+            ))}
+          </div>
+        </div>
+        {filtered.length === 0 ? (
+          <div className="adm-empty">
+            <AIcon name="inbox" size={32}/>
+            <h4>No bookings match</h4>
+            <p>Try clearing the filters.</p>
+            <Btn variant="secondary" onClick={() => { setFilterStatus('All'); setFilterPay('All'); }}>Clear filters</Btn>
+          </div>
+        ) : (
+          <table className="adm-table">
+            <thead><tr><th>ID</th><th>Customer</th><th>Service</th><th>Pro</th><th>Date</th><th>Status</th><th>Pay</th><th>Price</th><th style={{textAlign:'right'}}>Actions</th></tr></thead>
+            <tbody>
+              {filtered.map(b => (
+                <tr key={b.id}>
+                  <td><span className="id">{b.id}</span></td>
+                  <td><div className="who"><div className="av">{b.initials}</div>{b.who}</div></td>
+                  <td>{b.svc}</td>
+                  <td>{b.pro}</td>
+                  <td>{b.date}</td>
+                  <td><StatusPill s={b.status} /></td>
+                  <td>{b.pay}</td>
+                  <td><span className="price"><span className="rs">Rs</span>{b.price.toLocaleString()}</span></td>
+                  <td style={{textAlign:'right'}}>
+                    <div style={{ display: 'inline-flex', gap: 6 }}>
+                      <Btn variant="ghost" size="sm" icon="eye" onClick={() => onToast('Viewing ' + b.id)} title="View" />
+                      <Btn variant="success" size="sm" icon="check" onClick={() => markDone(b.id)} disabled={b.status === 'Done' || b.status === 'Cancelled'}>Done</Btn>
+                      <Btn variant="danger-outline" size="sm" onClick={() => cancelBooking(b.id)} disabled={b.status === 'Cancelled' || b.status === 'Done'}>Cancel</Btn>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ===== Providers page =====
+function ProvidersPage({ providers, setProviders, onToast }) {
+  const [filterTrade, setFilterTrade] = useState('All');
+  const trades = ['All', ...Array.from(new Set(providers.map(p => p.trade)))];
+  const filtered = filterTrade === 'All' ? providers : providers.filter(p => p.trade === filterTrade);
+
+  const toggleSuspend = (id) => {
+    setProviders(prev => prev.map(p => p.id === id ? { ...p, status: p.status === 'Suspended' ? 'Verified' : 'Suspended' } : p));
+    onToast('Provider status updated');
+  };
+
+  return (
+    <div className="adm-main">
+      <div className="adm-page-head">
+        <div><h1>Providers</h1><p>{filtered.length} of {providers.length} providers shown.</p></div>
+        <div className="actions">
+          <Btn variant="ghost" icon="download" onClick={() => onToast('Provider list exported')}>Export</Btn>
+          <Btn variant="primary" icon="plus" onClick={() => onToast('Invite provider opened')}>Add provider</Btn>
+        </div>
+      </div>
+      <div className="adm-card">
+        <div className="adm-card-head">
+          <h3>All providers</h3>
+          <div className="actions">
+            {trades.map(t => (
+              <Btn key={t} variant="secondary" size="sm" on={filterTrade === t} onClick={() => setFilterTrade(t)}>{t}</Btn>
+            ))}
+          </div>
+        </div>
+        <table className="adm-table">
+          <thead><tr><th>Name</th><th>Trade</th><th>City</th><th>Years</th><th>Jobs</th><th>Rating</th><th>Status</th><th style={{textAlign:'right'}}>Actions</th></tr></thead>
+          <tbody>
+            {filtered.map(r => (
+              <tr key={r.id}>
+                <td><div className="who"><div className="av">{r.initials}</div>{r.name}</div></td>
+                <td>{r.trade}</td>
+                <td>{r.city}</td>
+                <td>{r.years}</td>
+                <td>{r.jobs}</td>
+                <td>★ {r.rating}</td>
+                <td><StatusPill s={r.status} /></td>
+                <td style={{textAlign:'right'}}>
+                  <div style={{ display: 'inline-flex', gap: 6 }}>
+                    <Btn variant="ghost" size="sm" icon="message-circle" onClick={() => onToast('Messaging ' + r.name)} title="Message" />
+                    <Btn variant="secondary" size="sm" onClick={() => onToast('Viewing ' + r.name)}>View</Btn>
+                    {r.status === 'Suspended'
+                      ? <Btn variant="success" size="sm" icon="check" onClick={() => toggleSuspend(r.id)}>Reinstate</Btn>
+                      : <Btn variant="danger-outline" size="sm" onClick={() => toggleSuspend(r.id)}>Suspend</Btn>
+                    }
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+// ===== Customers =====
+const INITIAL_CUSTOMERS = [
+  { id: 'c1', name: 'Asma Rahim',   initials: 'AR', city: 'Karachi · DHA',         joined: 'Jan 2026', bookings: 12, status: 'Active' },
+  { id: 'c2', name: 'Tariq Hussain',initials: 'TH', city: 'Karachi · Gulshan',     joined: 'Feb 2026', bookings: 7,  status: 'Active' },
+  { id: 'c3', name: 'Nida Baig',    initials: 'NB', city: 'Karachi · Clifton',     joined: 'Mar 2026', bookings: 4,  status: 'Active' },
+  { id: 'c4', name: 'Junaid Malik', initials: 'JM', city: 'Lahore · Johar Town',   joined: 'Mar 2026', bookings: 2,  status: 'Active' },
+  { id: 'c5', name: 'Sana Khan',    initials: 'SK', city: 'Lahore · Gulberg',      joined: 'Apr 2026', bookings: 1,  status: 'Suspended' },
+];
+function CustomersPage({ onToast }) {
+  const [rows, setRows] = useState(INITIAL_CUSTOMERS);
+  const [filter, setFilter] = useState('All');
+  const filtered = filter === 'All' ? rows : rows.filter(r => r.status === filter);
+  const toggle = (id) => {
+    setRows(prev => prev.map(r => r.id === id ? { ...r, status: r.status === 'Suspended' ? 'Active' : 'Suspended' } : r));
+    onToast('Customer status updated');
+  };
+  return (
+    <div className="adm-main">
+      <div className="adm-page-head">
+        <div><h1>Customers</h1><p>{filtered.length} of {rows.length} households shown.</p></div>
+        <div className="actions">
+          <Btn variant="ghost" icon="mail" onClick={() => onToast('Newsletter compose opened')}>Email all</Btn>
+          <Btn variant="primary" icon="plus" onClick={() => onToast('Invite customer opened')}>Invite</Btn>
+        </div>
+      </div>
+      <div className="adm-card">
+        <div className="adm-card-head">
+          <h3>All customers</h3>
+          <div className="actions">
+            {['All', 'Active', 'Suspended'].map(s => (
+              <Btn key={s} variant="secondary" size="sm" on={filter === s} onClick={() => setFilter(s)}>{s}</Btn>
+            ))}
+          </div>
+        </div>
+        <table className="adm-table">
+          <thead><tr><th>Name</th><th>City</th><th>Joined</th><th>Bookings</th><th>Status</th><th style={{textAlign:'right'}}>Actions</th></tr></thead>
+          <tbody>
+            {filtered.map(r => (
+              <tr key={r.id}>
+                <td><div className="who"><div className="av">{r.initials}</div>{r.name}</div></td>
+                <td>{r.city}</td>
+                <td>{r.joined}</td>
+                <td>{r.bookings}</td>
+                <td><StatusPill s={r.status} /></td>
+                <td style={{textAlign:'right'}}>
+                  <div style={{ display: 'inline-flex', gap: 6 }}>
+                    <Btn variant="ghost" size="sm" icon="message-circle" onClick={() => onToast('Messaging ' + r.name)} title="Message" />
+                    <Btn variant="secondary" size="sm" onClick={() => onToast('Viewing ' + r.name)}>View</Btn>
+                    {r.status === 'Suspended'
+                      ? <Btn variant="success" size="sm" icon="check" onClick={() => toggle(r.id)}>Reinstate</Btn>
+                      : <Btn variant="danger-outline" size="sm" onClick={() => toggle(r.id)}>Suspend</Btn>}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+// ===== Complaints =====
+const INITIAL_COMPLAINTS = [
+  { id: 'CP-1042', who: 'Asma R.',    initials: 'AR', svc: 'Plumber',     issue: 'Worker arrived 2hrs late', priority: 'High',   status: 'Open' },
+  { id: 'CP-1041', who: 'Tariq H.',   initials: 'TH', svc: 'Electrician', issue: 'Overcharged for parts',    priority: 'High',   status: 'Open' },
+  { id: 'CP-1039', who: 'Nida B.',    initials: 'NB', svc: 'Carpenter',   issue: 'Job left incomplete',      priority: 'Medium', status: 'Open' },
+  { id: 'CP-1037', who: 'Junaid M.',  initials: 'JM', svc: 'Plumber',     issue: 'Rude behavior',            priority: 'Medium', status: 'Open' },
+  { id: 'CP-1034', who: 'Sana K.',    initials: 'SK', svc: 'Painter',     issue: 'Wrong color used',         priority: 'Low',    status: 'Open' },
+  { id: 'CP-1031', who: 'Hassan A.',  initials: 'HA', svc: 'AC tech',     issue: 'No-show',                  priority: 'High',   status: 'Open' },
+];
+function ComplaintsPage({ onToast }) {
+  const [rows, setRows] = useState(INITIAL_COMPLAINTS);
+  const [filter, setFilter] = useState('Open');
+  const filtered = filter === 'All' ? rows : rows.filter(r => r.status === filter);
+  const resolve = (id) => { setRows(prev => prev.map(r => r.id === id ? { ...r, status: 'Resolved' } : r)); onToast('Ticket ' + id + ' resolved'); };
+  const escalate = (id) => onToast('Ticket ' + id + ' escalated to senior ops');
+  const prioColor = (p) => p === 'High' ? 'danger' : p === 'Medium' ? 'pend' : 'info';
+  return (
+    <div className="adm-main">
+      <div className="adm-page-head">
+        <div><h1>Complaints</h1><p>{rows.filter(r=>r.status==='Open').length} open · {rows.filter(r=>r.status==='Resolved').length} resolved.</p></div>
+        <div className="actions">
+          <Btn variant="ghost" icon="download" onClick={() => onToast('Tickets exported')}>Export</Btn>
+          <Btn variant="dark" icon="plus" onClick={() => onToast('Manual ticket form opened')}>Log ticket</Btn>
+        </div>
+      </div>
+      <div className="adm-card">
+        <div className="adm-card-head">
+          <h3>Tickets</h3>
+          <div className="actions">
+            {['Open', 'Resolved', 'All'].map(s => (
+              <Btn key={s} variant="secondary" size="sm" on={filter === s} onClick={() => setFilter(s)}>{s}</Btn>
+            ))}
+          </div>
+        </div>
+        <table className="adm-table">
+          <thead><tr><th>Ticket</th><th>Customer</th><th>Service</th><th>Issue</th><th>Priority</th><th>Status</th><th style={{textAlign:'right'}}>Actions</th></tr></thead>
+          <tbody>
+            {filtered.map(r => (
+              <tr key={r.id}>
+                <td><span className="id">{r.id}</span></td>
+                <td><div className="who"><div className="av">{r.initials}</div>{r.who}</div></td>
+                <td>{r.svc}</td>
+                <td style={{maxWidth: 260}}>{r.issue}</td>
+                <td><span className={'adm-pill ' + prioColor(r.priority)}>{r.priority}</span></td>
+                <td><StatusPill s={r.status} /></td>
+                <td style={{textAlign:'right'}}>
+                  <div style={{ display: 'inline-flex', gap: 6 }}>
+                    <Btn variant="ghost" size="sm" icon="alert-triangle" onClick={() => escalate(r.id)} disabled={r.status==='Resolved'} title="Escalate" />
+                    <Btn variant="secondary" size="sm" onClick={() => onToast('Opened ' + r.id)}>View</Btn>
+                    <Btn variant="success" size="sm" icon="check" onClick={() => resolve(r.id)} disabled={r.status==='Resolved'}>Resolve</Btn>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+// ===== Payments =====
+function PaymentsPage({ onToast }) {
+  const [period, setPeriod] = useState('This week');
+  const txns = [
+    { id: 'TX-9921', booking: 'EM-21459', cust: 'Tariq H.', method: 'Card', amt: 1200, status: 'Cleared',  when: 'Today 14:22' },
+    { id: 'TX-9920', booking: 'EM-21458', cust: 'Asma R.',  method: 'COD',  amt: 800,  status: 'Cleared',  when: 'Today 11:08' },
+    { id: 'TX-9918', booking: 'EM-21443', cust: 'Junaid M.',method: 'COD',  amt: 650,  status: 'Cleared',  when: 'Yesterday' },
+    { id: 'TX-9914', booking: 'EM-21421', cust: 'Sana K.',  method: 'Card', amt: 1500, status: 'Refunded', when: 'Apr 24' },
+    { id: 'TX-9912', booking: 'EM-21460', cust: 'Nida B.',  method: 'COD',  amt: 1400, status: 'Pending',  when: 'Apr 23' },
+  ];
+  const codTotal = 2850, cardTotal = 1200, refunds = 1500;
+  const total = codTotal + cardTotal;
+  const codPct = Math.round((codTotal / total) * 100);
+  return (
+    <div className="adm-main">
+      <div className="adm-page-head">
+        <div><h1>Payments</h1><p>COD vs Card breakdown · {period.toLowerCase()}.</p></div>
+        <div className="actions">
+          {['Today', 'This week', 'This month'].map(p => (
+            <Btn key={p} variant="secondary" size="sm" on={period === p} onClick={() => setPeriod(p)}>{p}</Btn>
+          ))}
+          <Btn variant="primary" icon="download" onClick={() => onToast('Statement downloaded')}>Statement</Btn>
+        </div>
+      </div>
+      <div className="adm-kpis">
+        <KPI label="Total cleared" prefix="Rs" value={total.toLocaleString()} delta="+12.4%" />
+        <KPI label="Cash on delivery" prefix="Rs" value={codTotal.toLocaleString()} delta={codPct + '% of total'} />
+        <KPI label="Card payments" prefix="Rs" value={cardTotal.toLocaleString()} delta={(100-codPct) + '% of total'} />
+        <KPI label="Refunds" prefix="Rs" value={refunds.toLocaleString()} delta="1 transaction" down />
+      </div>
+      <div className="adm-card">
+        <div className="adm-card-head">
+          <h3>Transactions</h3>
+          <div className="actions">
+            <Btn variant="ghost" size="sm" icon="filter" onClick={() => onToast('Filter panel opened')}>Filter</Btn>
+            <Btn variant="ghost" size="sm" icon="download" onClick={() => onToast('CSV exported')}>CSV</Btn>
+          </div>
+        </div>
+        <table className="adm-table">
+          <thead><tr><th>Txn</th><th>Booking</th><th>Customer</th><th>Method</th><th>Amount</th><th>Status</th><th>When</th><th style={{textAlign:'right'}}>Actions</th></tr></thead>
+          <tbody>
+            {txns.map(t => (
+              <tr key={t.id}>
+                <td><span className="id">{t.id}</span></td>
+                <td><span className="id">{t.booking}</span></td>
+                <td>{t.cust}</td>
+                <td>{t.method}</td>
+                <td><span className="price"><span className="rs">Rs</span>{t.amt.toLocaleString()}</span></td>
+                <td><span className={'adm-pill ' + (t.status==='Cleared'?'ok':t.status==='Refunded'?'danger':'pend')}>{t.status}</span></td>
+                <td>{t.when}</td>
+                <td style={{textAlign:'right'}}>
+                  <div style={{ display: 'inline-flex', gap: 6 }}>
+                    <Btn variant="secondary" size="sm" onClick={() => onToast('Receipt for ' + t.id)}>Receipt</Btn>
+                    <Btn variant="danger-outline" size="sm" onClick={() => onToast('Refund initiated for ' + t.id)} disabled={t.status!=='Cleared'}>Refund</Btn>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+// ===== Settings =====
+function SettingsPage({ onToast }) {
+  const [autoApprove, setAutoApprove] = useState(false);
+  const [smsAlerts, setSmsAlerts] = useState(true);
+  const [maintenance, setMaintenance] = useState(false);
+  const [commission, setCommission] = useState('15');
+  const [city, setCity] = useState('Karachi');
+  return (
+    <div className="adm-main">
+      <div className="adm-page-head">
+        <div><h1>Settings</h1><p>Platform configuration.</p></div>
+        <div className="actions">
+          <Btn variant="ghost" onClick={() => onToast('Changes discarded')}>Discard</Btn>
+          <Btn variant="dark" icon="save" onClick={() => onToast('Settings saved')}>Save changes</Btn>
+        </div>
+      </div>
+      <div className="adm-grid-2">
+        <div className="adm-card">
+          <div className="adm-card-head"><h3>Operations</h3></div>
+          <div style={{ padding: '4px 18px 18px' }}>
+            <SettingRow
+              label="Auto-approve verified providers"
+              hint="Skip manual review for providers with valid CNIC and 5+ jobs."
+              control={<Toggle on={autoApprove} onChange={() => { setAutoApprove(v => !v); onToast('Auto-approve ' + (!autoApprove ? 'enabled' : 'disabled')); }} />}
+            />
+            <SettingRow
+              label="SMS alerts to customers"
+              hint="Send booking confirmations and ETA updates over SMS."
+              control={<Toggle on={smsAlerts} onChange={() => { setSmsAlerts(v => !v); onToast('SMS alerts ' + (!smsAlerts ? 'on' : 'off')); }} />}
+            />
+            <SettingRow
+              label="Maintenance mode"
+              hint="Block new bookings while you fix things."
+              control={<Toggle on={maintenance} onChange={() => { setMaintenance(v => !v); onToast(!maintenance ? 'Maintenance mode ON' : 'Platform back online'); }} danger />}
+            />
+            <SettingRow
+              label="Platform commission (%)"
+              hint="Cut taken on each completed booking."
+              control={
+                <input
+                  className="adm-input"
+                  type="number" min="0" max="50"
+                  value={commission}
+                  onChange={(e) => setCommission(e.target.value)}
+                />
+              }
+            />
+            <SettingRow
+              label="Default city"
+              hint="Used for new provider onboarding."
+              control={
+                <select className="adm-input" value={city} onChange={(e) => setCity(e.target.value)}>
+                  <option>Karachi</option><option>Lahore</option><option>Islamabad</option><option>Rawalpindi</option>
+                </select>
+              }
+            />
+          </div>
+        </div>
+        <div className="adm-card">
+          <div className="adm-card-head"><h3>Danger zone</h3></div>
+          <div style={{ padding: '4px 18px 18px' }}>
+            <SettingRow label="Reset demo data" hint="Restore initial bookings, providers, and customers." control={<Btn variant="secondary" size="sm" onClick={() => onToast('Demo data reset')}>Reset</Btn>} />
+            <SettingRow label="Clear all complaints" hint="Resolves every open ticket." control={<Btn variant="danger-outline" size="sm" onClick={() => onToast('Complaints cleared')}>Clear</Btn>} />
+            <SettingRow label="Wipe platform" hint="Permanently delete all data. This cannot be undone." control={<Btn variant="danger" size="sm" icon="trash-2" onClick={() => onToast('Confirmation required (demo)')}>Wipe</Btn>} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+function SettingRow({ label, hint, control }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 0', borderBottom: '1px solid var(--slate-100)' }}>
+      <div style={{ flex: 1 }}>
+        <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--ink)' }}>{label}</div>
+        <div style={{ fontSize: 12, color: 'var(--ink-60)', marginTop: 2 }}>{hint}</div>
+      </div>
+      <div>{control}</div>
+    </div>
+  );
+}
+function Toggle({ on, onChange, danger }) {
+  return (
+    <button onClick={onChange} style={{
+      width: 40, height: 22, borderRadius: 999,
+      background: on ? (danger ? 'var(--danger)' : 'var(--success)') : 'var(--slate-300)',
+      border: 'none', position: 'relative', cursor: 'pointer', transition: 'background 120ms',
+    }}>
+      <span style={{
+        position: 'absolute', top: 2, left: on ? 20 : 2, width: 18, height: 18,
+        borderRadius: 999, background: '#fff', transition: 'left 120ms',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+      }} />
+    </button>
+  );
+}
+
+// ===== App shell =====
+function App() {
+  const [active, setActive] = useState('overview');
+  const [bookings, setBookings] = useState(INITIAL_BOOKINGS);
+  const [pending, setPending] = useState(INITIAL_PENDING);
+  const [providers, setProviders] = useState(INITIAL_PROVIDERS);
+  const [toast, setToast] = useToast();
+
+  const approve = (id) => {
+    const p = pending.find(x => x.id === id);
+    setPending(prev => prev.filter(x => x.id !== id));
+    if (p) {
+      setProviders(prev => [{ id: 'new-' + id, name: p.name, initials: p.initials, trade: p.trade, city: p.city, years: p.years, jobs: 0, rating: 0, status: 'Verified' }, ...prev]);
+      setToast(p.name + ' approved');
+    }
+  };
+  const reject = (id) => {
+    const p = pending.find(x => x.id === id);
+    setPending(prev => prev.filter(x => x.id !== id));
+    if (p) setToast(p.name + ' rejected');
+  };
+
+  let page;
+  if (active === 'overview')      page = <Overview bookings={bookings} pending={pending} onApprove={approve} onReject={reject} onToast={setToast} onNav={setActive} />;
+  else if (active === 'bookings') page = <BookingsPage bookings={bookings} setBookings={setBookings} onToast={setToast} />;
+  else if (active === 'providers') page = <ProvidersPage providers={providers} setProviders={setProviders} onToast={setToast} />;
+  else if (active === 'customers')  page = <CustomersPage onToast={setToast} />;
+  else if (active === 'complaints') page = <ComplaintsPage onToast={setToast} />;
+  else if (active === 'payments')   page = <PaymentsPage onToast={setToast} />;
+  else if (active === 'settings')   page = <SettingsPage onToast={setToast} />;
+
+  return (
+    <div className="adm-app">
+      <Rail active={active} onChange={setActive} />
+      <div>
+        <TopBar onAction={setToast} />
+        {page}
+      </div>
+      <Toast msg={toast} />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);

@@ -1,0 +1,26 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Spacing</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 22px 24px; background: #fff; min-height: 150px; }
+  .label { font-family: var(--font-body); font-size: 11px; color: var(--ink-60); letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; margin-bottom: 12px;}
+  .row { display: flex; align-items: flex-end; gap: 14px; }
+  .stack { display: flex; flex-direction: column; align-items: center; gap: 6px;}
+  .bar { background: var(--brand-orange); width: 28px; }
+  .num { font-family: var(--font-mono); font-size: 11px; color: var(--ink-60);}
+  .name { font-family: var(--font-mono); font-size: 10px; color: var(--ink-40);}
+</style></head>
+<body>
+  <div class="label">Spacing scale — 4px base</div>
+  <div class="row">
+    <div class="stack"><div class="bar" style="height:4px"></div><span class="num">4</span><span class="name">sp-1</span></div>
+    <div class="stack"><div class="bar" style="height:8px"></div><span class="num">8</span><span class="name">sp-2</span></div>
+    <div class="stack"><div class="bar" style="height:12px"></div><span class="num">12</span><span class="name">sp-3</span></div>
+    <div class="stack"><div class="bar" style="height:16px"></div><span class="num">16</span><span class="name">sp-4</span></div>
+    <div class="stack"><div class="bar" style="height:20px"></div><span class="num">20</span><span class="name">sp-5</span></div>
+    <div class="stack"><div class="bar" style="height:24px"></div><span class="num">24</span><span class="name">sp-6</span></div>
+    <div class="stack"><div class="bar" style="height:32px"></div><span class="num">32</span><span class="name">sp-8</span></div>
+    <div class="stack"><div class="bar" style="height:48px"></div><span class="num">48</span><span class="name">sp-12</span></div>
+    <div class="stack"><div class="bar" style="height:64px"></div><span class="num">64</span><span class="name">sp-16</span></div>
+  </div>
+</body></html>

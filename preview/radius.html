@@ -1,0 +1,18 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Radius</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: #fff; min-height: 150px; display: flex; gap: 20px; align-items: center; }
+  .stack { display: flex; flex-direction: column; align-items: center; gap: 10px;}
+  .box { width: 80px; height: 56px; background: var(--ink); border: 2px solid var(--ink); }
+  .pill { width: 110px; height: 40px; background: var(--brand-orange); border-radius: 999px; display: flex; align-items: center; justify-content: center; color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 13px; }
+  .name { font-family: var(--font-mono); font-size: 11px; color: var(--ink-60);}
+  .meta { font-family: var(--font-body); font-size: 10px; color: var(--ink-40);}
+</style></head>
+<body>
+  <div class="stack"><div class="box" style="border-radius:4px"></div><span class="name">r-sm</span><span class="meta">4px</span></div>
+  <div class="stack"><div class="box" style="border-radius:8px"></div><span class="name">r-md</span><span class="meta">8px · inputs</span></div>
+  <div class="stack"><div class="box" style="border-radius:12px"></div><span class="name">r-lg</span><span class="meta">12px · cards</span></div>
+  <div class="stack"><div class="box" style="border-radius:16px"></div><span class="name">r-xl</span><span class="meta">16px · sheets</span></div>
+  <div class="stack"><div class="pill">Book now</div><span class="name">r-pill</span><span class="meta">buttons, chips</span></div>
+</body></html>
